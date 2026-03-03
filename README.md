@@ -298,10 +298,10 @@ Install individual skills or the entire skill pack:
 
 ```bash
 # Install all skills
-npx skills add dl-alexandre/cli-tools-skills
+npx skills add dl-alexandre/Skills
 
 # Or specific skills only
-npx skills add dl-alexandre/cli-tools-skills --include asc-cli-usage,asc-release-flow
+npx skills add dl-alexandre/Skills --include asc-cli-usage,asc-release-flow
 ```
 
 ## Usage
