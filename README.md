@@ -1,5 +1,7 @@
 # CLI Tools Skills
 
+[![Validate and Index Skills](https://github.com/dl-alexandre/Skills/actions/workflows/index-skills.yml/badge.svg)](https://github.com/dl-alexandre/Skills/actions/workflows/index-skills.yml)
+
 A collection of Agent Skills for all CLI tools in the monorepo. These skills provide zero-friction automation guidance for:
 
 - **App Store Connect** (`asc`) - App Store Connect API
@@ -351,6 +353,30 @@ Each skill contains:
 | `ams` | Apple-Map-Server-CLI | Apple Maps Server API |
 | `ask` | App-StoreKit-CLI | App Store Kit API |
 | `ass` | App-Store-Server-CLI | App Store Server API |
+
+## CI/CD & Skills.sh Indexing
+
+This repository uses GitHub Actions to automatically validate and index skills:
+
+### Validation
+- All skills must have a valid `SKILL.md` file with YAML frontmatter
+- Required fields: `name` and `description`
+- Validation runs on every PR and push to main
+
+### Skills.sh Indexing
+Skills.sh uses telemetry-driven discovery. To ensure all skills appear on the leaderboard:
+
+1. **Automatic indexing**: The CI workflow runs weekly and on every push to install all skills, triggering telemetry that indexes them on [skills.sh](https://skills.sh)
+
+2. **Manual validation**: Run locally to check all skills:
+   ```bash
+   ./scripts/validate-skills.sh
+   ```
+
+3. **Force re-index**: Trigger the workflow manually from the Actions tab with "Force re-index all skills" enabled
+
+### View on skills.sh
+📊 **[View your skills on skills.sh](https://skills.sh/dl-alexandre)**
 
 ## License
 

@@ -1,0 +1,170 @@
+name: Validate and Index Skills
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'skills/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'skills/**'
+  schedule:
+    # Run weekly to keep skills indexed on skills.sh
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      index_skills:
+        description: 'Force re-index all skills on skills.sh'
+        type: boolean
+        default: false
+
+jobs:
+  validate:
+    name: Validate Skills
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate SKILL.md files
+        run: |
+          echo "🔍 Validating all skills have proper SKILL.md files..."
+          
+          missing_frontmatter=()
+          missing_name=()
+          missing_description=()
+          
+          for skill_dir in skills/*/; do
+            skill_name=$(basename "$skill_dir")
+            skill_file="${skill_dir}SKILL.md"
+            
+            if [[ ! -f "$skill_file" ]]; then
+              echo "❌ $skill_name: Missing SKILL.md file"
+              missing_frontmatter+=("$skill_name")
+              continue
+            fi
+            
+            # Check for YAML frontmatter
+            if ! grep -q "^---" "$skill_file"; then
+              echo "❌ $skill_name: Missing YAML frontmatter (---)"
+              missing_frontmatter+=("$skill_name")
+              continue
+            fi
+            
+            # Check for name field
+            if ! grep -q "^name:" "$skill_file"; then
+              echo "❌ $skill_name: Missing 'name' field in frontmatter"
+              missing_name+=("$skill_name")
+              continue
+            fi
+            
+            # Check for description field  
+            if ! grep -q "^description:" "$skill_file"; then
+              echo "❌ $skill_name: Missing 'description' field in frontmatter"
+              missing_description+=("$skill_name")
+              continue
+            fi
+            
+            # Extract name from frontmatter and verify it matches directory
+            declared_name=$(grep "^name:" "$skill_file" | head -1 | sed 's/^name: *//' | tr -d '"' | tr -d "'")
+            if [[ "$declared_name" != "$skill_name" ]]; then
+              echo "⚠️  $skill_name: Declared name '$declared_name' doesn't match directory name"
+            fi
+            
+            echo "✅ $skill_name: Valid"
+          done
+          
+          # Count total skills
+          total_skills=$(ls -1 skills/ | wc -l)
+          echo ""
+          echo "📊 Summary: $total_skills skills found"
+          
+          # Report errors
+          errors=0
+          if [[ ${#missing_frontmatter[@]} -gt 0 ]]; then
+            echo "❌ ${#missing_frontmatter[@]} skills missing proper frontmatter"
+            errors=$((errors + ${#missing_frontmatter[@]}))
+          fi
+          
+          if [[ ${#missing_name[@]} -gt 0 ]]; then
+            echo "❌ ${#missing_name[@]} skills missing 'name' field"
+            errors=$((errors + ${#missing_name[@]}))
+          fi
+          
+          if [[ ${#missing_description[@]} -gt 0 ]]; then
+            echo "❌ ${#missing_description[@]} skills missing 'description' field"
+            errors=$((errors + ${#missing_description[@]}))
+          fi
+          
+          if [[ $errors -gt 0 ]]; then
+            echo ""
+            echo "❌ Validation failed with $errors error(s)"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ All skills validated successfully!"
+
+  index:
+    name: Index Skills on skills.sh
+    needs: validate
+    runs-on: ubuntu-latest
+    # Only run indexing on push to main, schedule, or manual trigger
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Index all skills
+        env:
+          # Allow telemetry to be sent so skills get indexed
+          DISABLE_TELEMETRY: ''
+          DO_NOT_TRACK: ''
+        run: |
+          echo "🚀 Indexing all skills on skills.sh..."
+          echo "This will trigger telemetry for all skills to appear on the leaderboard."
+          echo ""
+          
+          # Install all skills using the skills CLI
+          # This sends telemetry to skills.sh for each skill discovered
+          npx skills add "${{ github.repository }}" --all --yes
+          
+          echo ""
+          echo "✅ Skills indexed successfully!"
+          echo "Note: It may take a few minutes for skills to appear on skills.sh"
+
+  list-skills:
+    name: List All Skills
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: List discovered skills
+        run: |
+          echo "📋 Listing all skills in repository..."
+          npx skills add "${{ github.repository }}" --list
+          
+          echo ""
+          echo "🔢 Skill count by category:"
+          echo "App Store Connect (asc): $(ls -1 skills/asc-* 2>/dev/null | wc -l)"
+          echo "Google Play Developer (gpd): $(ls -1 skills/gpd-* 2>/dev/null | wc -l)"
+          echo "UniFi (usm/unifi): $(ls -1 skills/usm-* skills/unifi-* 2>/dev/null | wc -l)"
+          echo "Other: $(ls -1 skills/ | grep -vE '^(asc-|gpd-|usm-|unifi-)' | wc -l)"
