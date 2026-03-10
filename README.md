@@ -4,149 +4,94 @@
 
 A collection of Agent Skills for all CLI tools in the monorepo. These skills provide zero-friction automation guidance for:
 
-- **App Store Connect** (`asc`) - App Store Connect API
-- **Google Drive** (`gdrv`) - Google Drive API  
-- **Google Play Developer** (`gpd`) - Google Play Publishing
-- **UniFi Site Manager** (`usm`) - UniFi cloud site management
-- **Local UniFi** (`unifi`) - Local UniFi Controller API
-- **MyMarketNews** (`mpr`) - USDA commodity data
+- **Apple Business Connect** (`abc`) - Business location management
+- **Advance Commerce** (`adv`) - E-commerce and inventory management  
+- **Apple Maps Server** (`ams`) - Maps and geolocation APIs
+- **App StoreKit** (`ask`) - In-app purchases and subscriptions
 - **California Irrigation** (`cimis`) - CIMIS weather data
-- **Apple Map Server** (`ams`) - Apple Maps Server API
-- **App StoreKit** (`ask`) - App Store Kit API
-- **App Store Server** (`ass`) - App Store Server API
+- **Google Drive** (`gdrv`) - File storage and management
+- **Google Play Developer** (`gpd`) - Android app publishing
+- **Grokipedia** (`grokipedia`) - Knowledge base and wiki search
+- **MyMarketNews** (`mpr`) - USDA commodity data
 - **Monorepo** (`monorepo-cli`) - Cross-project management
+- **Local UniFi** (`unifi`) - On-premise network management
+- **UniFi Site Manager** (`usm`) - Cloud-based UniFi management
+- **UPS** (`ups`) - Package tracking and shipping
+- **X (Twitter)** (`x`) - Social media and tweets
 
 Skills follow the Agent Skills format.
 
 ## Available Skills
 
-### App Store Connect (asc)
+### Apple Business Connect (abc)
 
-#### asc-cli-usage
-Guidance for running `asc` commands (flags, pagination, output, auth).
-
-**Use when:**
-- You need the correct `asc` command or flag combination
-- You want JSON-first output and pagination tips for automation
-
-#### asc-workflow
-Define and run repo-local automation graphs using `asc workflow` and `.asc/workflow.json`.
+#### abc-cli
+Manage Apple Business Connect listings, place cards, and business hours.
 
 **Use when:**
-- You are migrating from lane-based automation to repo-local workflows
-- You need multi-step orchestration with machine-parseable JSON output for CI/agents
-- You need hooks (`before_all`, `after_all`, `error`), conditionals (`if`), and private helper sub-workflows
-- You want validation (`asc workflow validate`) with cycle/reference checks before execution
+- You need to manage business locations on Apple Maps
+- You want to update hours, photos, or business information
+- You need to verify or claim a business location
 
-#### asc-app-create-ui
-Create a new App Store Connect app via browser automation when no API exists.
+---
 
-**Use when:**
-- You need to create an app record (name, bundle ID, SKU, primary language)
-- You are comfortable logging in to App Store Connect in a real browser
+### Advance Commerce (adv)
 
-#### asc-xcode-build
-Build, archive, and export iOS/macOS apps with xcodebuild before uploading.
+#### adv-cli
+Query Advance Commerce APIs for e-commerce, products, inventory, and orders.
 
 **Use when:**
-- You need to create an IPA or PKG for upload
-- You're setting up CI/CD build pipelines
-- You need to configure ExportOptions.plist
-- You're troubleshooting encryption compliance issues
+- You need to check product catalogs or inventory
+- You want to create or update orders
+- You're working with customer data or sales reports
 
-#### asc-shots-pipeline
-Agent-first screenshot pipeline using xcodebuild/simctl, AXe, JSON plans, `asc screenshots frame` (experimental), and `asc screenshots upload`.
+---
 
-**Use when:**
-- You need a repeatable simulator screenshot automation flow
-- You want AXe-based UI driving before capture
-- You need a staged pipeline (capture -> frame -> upload)
-- You need to discover supported frame devices (`asc screenshots list-frame-devices`)
-- You want pinned Koubou guidance for deterministic framing (`koubou==0.13.0`)
+### Apple Maps Server (ams)
 
-#### asc-release-flow
-End-to-end release workflows for TestFlight and App Store.
+#### ams-cli
+Query Apple Maps Server APIs for geocoding, directions, and places.
 
 **Use when:**
-- You want to upload, distribute, and submit in one flow
-- You need the manual sequence for fine-grained control
-- You're releasing for iOS, macOS, visionOS, or tvOS
+- You need to geocode addresses or reverse geocode coordinates
+- You want directions between locations
+- You're searching for places or points of interest
 
-#### asc-signing-setup
-Bundle IDs, capabilities, certificates, and provisioning profiles.
+---
 
-**Use when:**
-- You are onboarding a new app or bundle ID
-- You need to create or rotate signing assets
+### App StoreKit (ask)
 
-#### asc-id-resolver
-Resolve IDs for apps, builds, versions, groups, and testers.
+#### ask-cli
+Query App StoreKit APIs for in-app purchases and subscriptions.
 
 **Use when:**
-- A command requires IDs and you only have names
-- You want deterministic outputs for automation
+- You need to check subscription status
+- You want to query transaction history
+- You're working with in-app purchase products
 
-#### asc-metadata-sync
-Metadata and localization sync (including legacy metadata format migration).
+---
 
-**Use when:**
-- You are updating App Store metadata or localizations
-- You need to validate character limits before upload
-- You need to update privacy policy URL or app-level metadata
+### California Irrigation (cimis)
 
-#### asc-localize-metadata
-Translate App Store metadata (description, keywords, what's new, subtitle) to multiple locales using LLM translation prompts and push via `asc`.
+#### cimis-cli
+Query CIMIS weather data for irrigation management.
 
 **Use when:**
-- You want to localize an app's App Store listing from a source locale (usually en-US)
-- You need locale-aware keywords (not literal translations) and strict character limit enforcement
-- You want a review-before-upload workflow for translations
+- You need ET0 (evapotranspiration) data for irrigation scheduling
+- You want weather data from California stations
+- You're managing agricultural water usage
 
-#### asc-submission-health
-Preflight checks, submission, and review monitoring.
+---
 
-**Use when:**
-- You want to reduce submission failures
-- You need to track review status and re-submit safely
-- You're troubleshooting "version not in valid state" errors
+### Google Drive (gdrv)
 
-#### asc-testflight-orchestration
-Beta groups, testers, build distribution, and What to Test notes.
+#### gdrv-cli
+Manage Google Drive files, folders, and permissions.
 
 **Use when:**
-- You manage multiple TestFlight groups and testers
-- You need consistent beta rollout steps
-
-#### asc-build-lifecycle
-Build processing, latest build resolution, and cleanup.
-
-**Use when:**
-- You are waiting on build processing
-- You want automated cleanup and retention policies
-
-#### asc-ppp-pricing
-Territory-specific pricing using purchasing power parity (PPP).
-
-**Use when:**
-- You want different prices for different countries
-- You are implementing localized pricing strategies
-- You need to adjust prices based on regional purchasing power
-
-#### asc-subscription-localization
-Bulk-localize subscription and IAP display names across all App Store locales.
-
-**Use when:**
-- You want to set the same subscription display name in every language at once
-- You need to fill in missing subscription/group/IAP localizations
-- You're tired of clicking through each locale in App Store Connect manually
-
-#### asc-notarization
-Archive, export, and notarize macOS apps with Developer ID signing.
-
-**Use when:**
-- You need to notarize a macOS app for distribution outside the App Store
-- You want the full flow: archive → Developer ID export → zip → notarize → staple
-- You're troubleshooting Developer ID signing or trust chain issues
+- You need to upload or download files to Google Drive
+- You want to manage folder structures or sharing permissions
+- You're automating cloud storage backups
 
 ---
 
@@ -218,38 +163,39 @@ Preflight checks and submission monitoring.
 
 ---
 
-### Google Drive (gdrv)
+### Grokipedia (grokipedia)
 
-#### gdrv-cli
-Google Drive CLI for file management.
+#### grokipedia-cli
+Query Grokipedia knowledge base for articles and documentation.
 
 **Use when:**
-- You need to upload/download files to/from Google Drive
-- You're managing Drive files programmatically
-- You need to share files or manage permissions
+- You need to search a knowledge base or wiki
+- You want to find related articles or topics
+- You're researching technical documentation
 
 ---
 
-### UniFi Site Manager (usm)
+### MyMarketNews (mpr)
 
-#### usm-cli
-UniFi Site Manager CLI for cloud-based site management.
+#### mpr-cli
+Query USDA MyMarketNews for commodity prices and market reports.
 
 **Use when:**
-- You need to monitor UniFi sites across multiple locations
-- You want to list sites and devices via the cloud API
-- You're managing UniFi deployments at scale
+- You need agricultural commodity prices
+- You want livestock or grain market data
+- You're analyzing USDA market reports
 
-**Key commands:**
-- `usm init` - Setup configuration
-- `usm sites list` - List all sites with filtering
-- `usm sites get <id>` - Get specific site details
-- `usm whoami` - Verify authentication
+---
 
-**Authentication:**
-- API key from unifi.ui.com (Settings → Control Plane → Integrations → API Keys)
-- Environment variable: `USM_API_KEY`
-- Never stored in config file
+### Monorepo CLI (monorepo-cli)
+
+#### monorepo-cli
+Cross-project management for the CLI tools monorepo.
+
+**Use when:**
+- You need to check CI status across all projects
+- You want to see which projects have commits since last release
+- You're managing releases across multiple CLIs
 
 ---
 
@@ -276,21 +222,50 @@ Local UniFi Controller CLI for on-premise network management.
 
 ---
 
-### Monorepo CLI Management (monorepo-cli)
+### UniFi Site Manager (usm)
 
-#### monorepo-cli
-Cross-project management for the CLI tools monorepo.
+#### usm-cli
+UniFi Site Manager CLI for cloud-based site management.
 
 **Use when:**
-- You need to check CI status across all 9 projects
-- You want to see which projects have commits since last release
-- You're managing releases across multiple CLIs
+- You need to monitor UniFi sites across multiple locations
+- You want to list sites and devices via the cloud API
+- You're managing UniFi deployments at scale
 
-**Available scripts:**
-- `check-ci-status.sh` - Check GitHub Actions CI status
-- `check-release-commits.sh` - Commits beyond latest release
-- `check-versions.sh` - Current versions
-- `monorepo-status.sh` - Full dashboard
+**Key commands:**
+- `usm init` - Setup configuration
+- `usm sites list` - List all sites with filtering
+- `usm sites get <id>` - Get specific site details
+- `usm whoami` - Verify authentication
+
+**Authentication:**
+- API key from unifi.ui.com (Settings → Control Plane → Integrations → API Keys)
+- Environment variable: `USM_API_KEY`
+- Never stored in config file
+
+---
+
+### UPS (ups)
+
+#### ups-cli
+Track shipments and manage UPS shipping.
+
+**Use when:**
+- You need to track UPS packages
+- You want shipping rates or create shipping labels
+- You're managing pickups or drop-off locations
+
+---
+
+### X (Twitter) (x)
+
+#### x-cli
+Interact with X (Twitter) API for tweets and social media.
+
+**Use when:**
+- You need to post tweets or threads
+- You want to search tweets or analyze timelines
+- You're managing media uploads or user interactions
 
 ---
 
@@ -303,7 +278,7 @@ Install individual skills or the entire skill pack:
 npx skills add dl-alexandre/Skills
 
 # Or specific skills only
-npx skills add dl-alexandre/Skills --include asc-cli-usage,asc-release-flow
+npx skills add dl-alexandre/Skills --skill gdrv-cli,mpr-cli,x-cli
 ```
 
 ## Usage
@@ -313,7 +288,7 @@ Skills are automatically available once installed. The agent will use them when 
 **Examples:**
 
 ```
-Build and upload my iOS app to App Store Connect
+Upload my backup.zip to Google Drive folder Backups
 ```
 
 ```
@@ -329,7 +304,11 @@ Check CI status for all CLI projects in the monorepo
 ```
 
 ```
-Upload file backup.zip to Google Drive folder Backups
+Track UPS package 1Z999AA10123456784
+```
+
+```
+Post a tweet about my new product launch
 ```
 
 ## Skill Structure
@@ -343,16 +322,20 @@ Each skill contains:
 
 | CLI | Repository | Description |
 |-----|------------|-------------|
-| `asc` | App-Store-Connect-CLI | App Store Connect API |
-| `gdrv` | Google-Drive-CLI | Google Drive API |
-| `gpd` | Google-Play-Developer-CLI | Google Play Publishing |
-| `usm` | UniFi-Site-Manager-CLI | UniFi cloud site management |
-| `unifi` | Local-UniFi-CLI | Local UniFi Controller API |
-| `mpr` | MyMarketNews-CLI | USDA commodity data |
+| `abc` | Apple-Business-Connect-CLI | Business location management |
+| `adv` | Advance-Commerce-CLI | E-commerce and inventory |
+| `ams` | Apple-Map-Server-CLI | Maps and geolocation APIs |
+| `ask` | App-StoreKit-CLI | In-app purchases and subscriptions |
 | `cimis` | cimis-cli | CIMIS weather data |
-| `ams` | Apple-Map-Server-CLI | Apple Maps Server API |
-| `ask` | App-StoreKit-CLI | App Store Kit API |
-| `ass` | App-Store-Server-CLI | App Store Server API |
+| `gdrv` | Google-Drive-CLI | Google Drive API |
+| `gpd` | Google-Play-Developer-CLI | Android app publishing |
+| `grokipedia` | Grokipedia-CLI | Knowledge base search |
+| `mpr` | MyMarketNews-CLI | USDA commodity data |
+| `monorepo-cli` | - | Cross-project management |
+| `unifi` | Local-UniFi-CLI | Local UniFi Controller API |
+| `usm` | UniFi-Site-Manager-CLI | UniFi cloud site management |
+| `ups` | UPS-CLI | Package tracking and shipping |
+| `x` | X-CLI | X (Twitter) API |
 
 ## CI/CD & Skills.sh Indexing
 
