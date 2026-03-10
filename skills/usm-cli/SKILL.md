@@ -1,3 +1,8 @@
+---
+name: usm-cli
+description: Manage UniFi sites via the cloud-based Site Manager API using the usm CLI. Use when working with multiple sites, cloud controllers, or UniFi cloud infrastructure.
+---
+
 # Skill: usm-cli
 
 # UniFi Site Manager CLI

@@ -1,3 +1,8 @@
+---
+name: unifi-cli
+description: Manage local UniFi Network controllers using the unifi CLI. Use when working with Dream Machine, Cloud Key, or self-hosted UniFi controllers.
+---
+
 # Skill: unifi-cli
 
 # Local UniFi Controller CLI
