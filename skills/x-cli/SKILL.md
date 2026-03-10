@@ -1,11 +1,11 @@
 ---
 name: x-cli
-description: Interact with X (Twitter) API using the x CLI. Use when working with tweets, timelines, media uploads, user data, or when the user mentions X, Twitter, social media, tweets, or x.
+description: Interact with X API using the x CLI. Use when working with posts, timelines, media uploads, user data, or when the user mentions X, social media, posts, or x.
 ---
 
 # X CLI
 
-Interact with X (Twitter) API using the `x` command-line tool.
+Interact with X API using the `x` command-line tool.
 
 ## Prerequisites
 

@@ -17,7 +17,7 @@ A collection of Agent Skills for all CLI tools in the monorepo. These skills pro
 - **Local UniFi** (`unifi`) - On-premise network management
 - **UniFi Site Manager** (`usm`) - Cloud-based UniFi management
 - **UPS** (`ups`) - Package tracking and shipping
-- **X (Twitter)** (`x`) - Social media and tweets
+- **X** (`x`) - Social media and posts
 
 Skills follow the Agent Skills format.
 
@@ -257,14 +257,14 @@ Track shipments and manage UPS shipping.
 
 ---
 
-### X (Twitter) (x)
+### X (x)
 
 #### x-cli
-Interact with X (Twitter) API for tweets and social media.
+Interact with X API for posts and social media.
 
 **Use when:**
-- You need to post tweets or threads
-- You want to search tweets or analyze timelines
+- You need to create posts or threads
+- You want to search posts or analyze timelines
 - You're managing media uploads or user interactions
 
 ---
@@ -335,7 +335,7 @@ Each skill contains:
 | `unifi` | Local-UniFi-CLI | Local UniFi Controller API |
 | `usm` | UniFi-Site-Manager-CLI | UniFi cloud site management |
 | `ups` | UPS-CLI | Package tracking and shipping |
-| `x` | X-CLI | X (Twitter) API |
+| `x` | X-CLI | X API |
 
 ## CI/CD & Skills.sh Indexing
 
