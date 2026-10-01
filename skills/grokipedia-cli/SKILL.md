@@ -83,9 +83,10 @@ grokipedia edit Python_programming_language --summary "Correct a date" \
 - `grokipedia check-updates` checks the independent CLI release, not the
   Grokipedia web version.
 
-## v0.2 announcement note
+## v0.3 compatibility note
 
-The September 22, 2026 Grokipedia v0.2 post previews a redesigned web
-homepage. It is not a CLI v0.2 release and does not publish a new API contract.
-The CLI should be updated when live endpoint behavior changes, not merely when
-the web version label changes.
+The Grokipedia website now displays `v0.3`. This is a web release label, not a
+CLI release: the independent CLI remains at its own upstream version. The v0.3
+API currently returns numeric `images[].position` values, which the CLI accepts
+alongside the older string form. The CLI should be updated when live endpoint
+behavior changes, not merely when the web version label changes.
